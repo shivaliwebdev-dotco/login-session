@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureGate | Login & Security</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <header class="topbar">
+    <a href="/" class="brand">
+      <span class="brand-icon">S</span>
+      SecureGate<span class="brand-dot">.</span>
+    </a>
+
+    <div class="topbar-note">
+      <span class="status-dot"></span>
+      Secure access portal
+    </div>
+  </header>
+
+  <main class="auth-layout">
+    <section class="intro-panel">
+      <div class="eyebrow">
+        <span class="eyebrow-line"></span>
+        YOUR SPACE. YOUR SECURITY.
+      </div>
+
+      <h1>
+        Your digital life,<br>
+        <span>protected.</span>
+      </h1>
+
+      <p class="intro-description">
+        A simple and secure way to access your account.
+        Sign in to continue or create your account in seconds.
+      </p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">01</div>
+          <div>
+            <h3>Protected passwords</h3>
+            <p>Passwords are hashed before storage.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">02</div>
+          <div>
+            <h3>Session management</h3>
+            <p>Stay signed in while your session is active.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">03</div>
+          <div>
+            <h3>Private dashboard</h3>
+            <p>Your dashboard requires authentication.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="security-note">
+        <span class="security-symbol">✓</span>
+        Built with Node.js and Express
+      </div>
+    </section>
+
+    <section class="auth-card">
+      <div class="card-top">
+        <div>
+          <p class="card-kicker">WELCOME TO SECUREGATE</p>
+          <h2 id="formTitle">Welcome back</h2>
+          <p class="card-subtitle" id="formSubtitle">
+            Enter your details to sign in.
+          </p>
+        </div>
+
+        <div class="lock-icon">⌑</div>
+      </div>
+
+      <div class="tab-switch" role="tablist" aria-label="Authentication options">
+        <button
+          type="button"
+          class="tab-button active"
+          id="loginTab"
+          role="tab"
+          aria-selected="true"
+        >
+          Sign In
+        </button>
+
+        <button
+          type="button"
+          class="tab-button"
+          id="registerTab"
+          role="tab"
+          aria-selected="false"
+        >
+          Create Account
+        </button>
+      </div>
+
+      <div id="messageBox" class="message-box" role="status" aria-live="polite"></div>
+
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label for="loginEmail">Email address</label>
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              data-target="loginPassword"
+              aria-label="Show password"
+            >
+              Show
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="primary-button" id="loginButton">
+          Sign In <span>→</span>
+        </button>
+
+        <p class="form-footer">
+          New here?
+          <button type="button" class="text-button" id="switchToRegister">
+            Create an account
+          </button>
+        </p>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <div class="form-group">
+          <label for="registerName">Full name</label>
+          <input
+            type="text"
+            id="registerName"
+            placeholder="Your full name"
+            minlength="2"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="registerEmail">Email address</label>
+          <input
+            type="email"
+            id="registerEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="registerPassword">Create password</label>
+
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="registerPassword"
+              placeholder="Minimum 8 characters"
+              minlength="8"
+              autocomplete="new-password"
+              required
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              data-target="registerPassword"
+              aria-label="Show password"
+            >
+              Show
+            </button>
+          </div>
+
+          <p class="field-hint">
+            Use at least 8 characters.
+          </p>
+        </div>
+
+        <button type="submit" class="primary-button" id="registerButton">
+          Create Account <span>→</span>
+        </button>
+
+        <p class="form-footer">
+          Already registered?
+          <button type="button" class="text-button" id="switchToLogin">
+            Sign in
+          </button>
+        </p>
+      </form>
+
+      <div class="card-bottom">
+        <span>◈</span>
+        Your account. Your control.
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>SECUREGATE © 2026</p>
+    <p>LOGIN · AUTHENTICATION · SESSION MANAGEMENT</p>
+  </footer>
+</body>
+</html>

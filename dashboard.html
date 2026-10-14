@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | SecureGate</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <header class="topbar">
+    <a href="/dashboard.html" class="brand">
+      <span class="brand-icon">S</span>
+      SecureGate<span class="brand-dot">.</span>
+    </a>
+
+    <div class="topbar-note">
+      <span class="status-dot"></span>
+      Authenticated session
+    </div>
+  </header>
+
+  <main class="dashboard-layout">
+    <section class="dashboard-heading">
+      <div>
+        <div class="eyebrow">
+          <span class="eyebrow-line"></span>
+          PRIVATE ACCOUNT AREA
+        </div>
+
+        <h1 id="welcomeHeading">Welcome to your dashboard.</h1>
+
+        <p>
+          Manage your account and view your current security status.
+        </p>
+      </div>
+
+      <button type="button" class="secondary-button" id="logoutButton">
+        Log Out ↗
+      </button>
+    </section>
+
+    <div class="dashboard-grid">
+      <article class="dashboard-card">
+        <p class="small-label">ACCOUNT STATUS</p>
+        <h2>Active</h2>
+        <p class="card-detail">
+          Your account is registered and available.
+        </p>
+        <span class="status-pill">● Account active</span>
+      </article>
+
+      <article class="dashboard-card">
+        <p class="small-label">PASSWORD SECURITY</p>
+        <h2>Protected</h2>
+        <p class="card-detail">
+          Your password is stored as a bcrypt hash.
+        </p>
+        <span class="status-pill">● Hashing enabled</span>
+      </article>
+
+      <article class="dashboard-card">
+        <p class="small-label">LOGIN SESSION</p>
+        <h2>Authenticated</h2>
+        <p class="card-detail">
+          This page loads private data from a protected API.
+        </p>
+        <span class="status-pill">● Session active</span>
+      </article>
+    </div>
+
+    <section class="dashboard-card profile-panel">
+      <p class="small-label">YOUR ACCOUNT</p>
+      <h2>Profile information</h2>
+
+      <div class="profile-details">
+        <div class="profile-detail">
+          <span>Full name</span>
+          <strong id="profileName">Loading...</strong>
+        </div>
+
+        <div class="profile-detail">
+          <span>Email address</span>
+          <strong id="profileEmail">Loading...</strong>
+        </div>
+
+        <div class="profile-detail">
+          <span>Account ID</span>
+          <strong id="profileId">Loading...</strong>
+        </div>
+
+        <div class="profile-detail">
+          <span>Account created</span>
+          <strong id="profileCreated">Loading...</strong>
+        </div>
+      </div>
+
+      <p class="dashboard-message" id="dashboardMessage">
+        Verifying your session...
+      </p>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>SECUREGATE © 2026</p>
+    <p>YOUR SESSION IS MANAGED BY EXPRESS</p>
+  </footer>
+
+  <script>
+    const welcomeHeading = document.getElementById("welcomeHeading");
+    const profileName = document.getElementById("profileName");
+    const profileEmail = document.getElementById("profileEmail");
+    const profileId = document.getElementById("profileId");
+    const profileCreated = document.getElementById("profileCreated");
+    const dashboardMessage = document.getElementById("dashboardMessage");
+    const logoutButton = document.getElementById("logoutButton");
+
+    async function loadDashboard() {
+      try {
+        const response = await fetch("/api/dashboard", {
+          credentials: "same-origin"
+        });
+
+        const result = await response.json();
+
+        if (response.status === 401) {
+          window.location.replace("/");
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(result.message || "Unable to load dashboard.");
+        }
+
+        const user = result.user;
+
+        welcomeHeading.textContent = `Welcome, ${user.name}.`;
+        profileName.textContent = user.name;
+        profileEmail.textContent = user.email;
+        profileId.textContent = user.id;
+
+        profileCreated.textContent = new Date(
+          user.createdAt
+        ).toLocaleDateString(undefined, {
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        });
+
+        dashboardMessage.textContent =
+          "Your session has been verified. You are viewing protected account information.";
+      } catch (error) {
+        dashboardMessage.textContent =
+          error.message || "Could not connect to the server.";
+
+        console.error("Dashboard error:", error);
+      }
+    }
+
+    logoutButton.addEventListener("click", async () => {
+      logoutButton.disabled = true;
+      logoutButton.textContent = "Logging out...";
+
+      try {
+        const response = await fetch("/api/auth/logout", {
+          method: "POST",
+          credentials: "same-origin"
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Unable to log out.");
+        }
+
+        window.location.replace("/");
+      } catch (error) {
+        dashboardMessage.textContent = error.message;
+        logoutButton.disabled = false;
+        logoutButton.textContent = "Log Out ↗";
+      }
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>
